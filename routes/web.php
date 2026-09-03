@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +24,5 @@ Route::name('practice.')->group(function () {
         return view('pages.practice.2');
     });
 });
+
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
