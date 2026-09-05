@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockInController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,3 +39,5 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name(
 Route::resource('suppliers', SupplierController::class);
 
 Route::resource('products', ProductController::class);
+
+Route::resource('stock-in', StockInController::class)->only(['index', 'store', 'destroy']);
