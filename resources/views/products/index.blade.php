@@ -5,6 +5,8 @@
     <x-sidebar-menu-dashboard routeName="categories.index" tittle="Kategori"/>
     <x-sidebar-menu-dashboard routeName="suppliers.index" tittle="Supplier"/>
     <x-sidebar-menu-dashboard routeName="products.index" tittle="Produk"/>
+    <x-sidebar-menu-dashboard routeName="stock-in.index" tittle="Barang Masuk"/>
+    <x-sidebar-menu-dashboard routeName="stock-out.index" tittle="Barang Keluar"/>
 </x-sidebar-dashboard>
 @endsection
 
@@ -18,7 +20,7 @@
         <div class="flex items-center justify-between mb-4">
             <div>
                 <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Daftar Produk Barang</h1>
-                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Master data persediaan barang gudang</p>
+                <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Master data persediaan & kontrol saldo barang gudang</p>
             </div>
             <button type="button" data-modal-target="modal-tambah-produk" data-modal-toggle="modal-tambah-produk" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 shadow-sm transition">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -62,6 +64,7 @@
                             <th scope="col" class="p-4 text-xs font-semibold text-left text-gray-500 uppercase tracking-wider dark:text-gray-300">Harga Beli</th>
                             <th scope="col" class="p-4 text-xs font-semibold text-left text-gray-500 uppercase tracking-wider dark:text-gray-300">Harga Jual</th>
                             <th scope="col" class="p-4 text-xs font-semibold text-left text-gray-500 uppercase tracking-wider dark:text-gray-300">Min. Stok</th>
+                            <th scope="col" class="p-4 text-xs font-semibold text-left text-gray-500 uppercase tracking-wider dark:text-gray-300">Sisa Stok</th>
                             <th scope="col" class="p-4 text-xs font-semibold text-left text-gray-500 uppercase tracking-wider dark:text-gray-300 w-44">Aksi</th>
                         </tr>
                     </thead>
@@ -76,6 +79,11 @@
                             <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">Rp {{ number_format($product->purchase_price, 0, ',', '.') }}</td>
                             <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">Rp {{ number_format($product->selling_price, 0, ',', '.') }}</td>
                             <td class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400">{{ $product->minimum_stock }}</td>
+                            <td class="p-4 text-sm whitespace-nowrap">
+                                <span class="px-2.5 py-1 text-xs font-bold rounded-full {{ $product->current_stock <= $product->minimum_stock ? 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300' : 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300' }}">
+                                    {{ $product->current_stock }} unit
+                                </span>
+                            </td>
                             <td class="p-4 space-x-2 whitespace-nowrap">
                                 <button type="button" data-modal-target="modal-edit-{{ $product->id }}" data-modal-toggle="modal-edit-{{ $product->id }}" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition">
                                     Edit
@@ -172,7 +180,7 @@
                         </div>
                         @empty
                         <tr>
-                            <td colspan="9" class="p-6 text-center text-gray-500 dark:text-gray-400">Belum ada data produk barang yang tersimpan.</td>
+                            <td colspan="10" class="p-6 text-center text-gray-500 dark:text-gray-400">Belum ada data produk barang yang tersimpan.</td>
                         </tr>
                         @endforelse
                     </tbody>
