@@ -37,4 +37,19 @@ class StockTransactionRepository
         $transaction = $this->findById($id);
         return $transaction->delete();
     }
+
+    public function getFilteredTransactions($startDate = null, $endDate = null, $type = null)
+    {
+        $query = StockTransaction::with(['product', 'user']);
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('date', [$startDate, $endDate]);
+        }
+
+        if ($type && in_array($type, ['in', 'out'])) {
+            $query->where('type', $type);
+        }
+
+        return $query->latest('date')->latest('id')->get();
+    }
 }

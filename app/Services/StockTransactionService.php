@@ -53,4 +53,18 @@ class StockTransactionService
     {
         return $this->stockTransactionRepository->delete($id);
     }
+
+    public function getReportData($startDate = null, $endDate = null, $type = null)
+    {
+        $transactions = $this->stockTransactionRepository->getFilteredTransactions($startDate, $endDate, $type);
+
+        $totalIn = $transactions->where('type', 'in')->sum('quantity');
+        $totalOut = $transactions->where('type', 'out')->sum('quantity');
+
+        return [
+            'transactions' => $transactions,
+            'totalIn'      => $totalIn,
+            'totalOut'     => $totalOut,
+        ];
+    }
 }

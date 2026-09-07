@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockInController;
 use App\Http\Controllers\StockOutController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,3 +48,5 @@ Route::resource('stock-in', StockInController::class)->only(['index', 'store', '
 Route::resource('stock-out', StockOutController::class)->only(['index', 'store', 'destroy']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
