@@ -42,4 +42,12 @@ class Product extends Model
     {
         return $this->hasMany(StockTransaction::class);
     }
+
+    public function getCurrentStockAttribute(): int
+    {
+        $stockIn = $this->stockTransactions()->where('type', 'in')->sum('quantity');
+        $stockOut = $this->stockTransactions()->where('type', 'out')->sum('quantity');
+
+        return (int) ($stockIn - $stockOut);
+    }
 }

@@ -14,6 +14,14 @@ class StockTransactionRepository
             ->get();
     }
 
+    public function getStockOut()
+    {
+        return StockTransaction::with(['product', 'user'])
+            ->where('type', 'out')
+            ->latest()
+            ->get();
+    }
+
     public function findById($id)
     {
         return StockTransaction::findOrFail($id);

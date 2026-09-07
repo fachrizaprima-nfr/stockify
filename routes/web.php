@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockInController;
+use App\Http\Controllers\StockOutController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,3 +42,5 @@ Route::resource('suppliers', SupplierController::class);
 Route::resource('products', ProductController::class);
 
 Route::resource('stock-in', StockInController::class)->only(['index', 'store', 'destroy']);
+
+Route::resource('stock-out', StockOutController::class)->only(['index', 'store', 'destroy']);
