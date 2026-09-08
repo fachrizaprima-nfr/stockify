@@ -85,43 +85,47 @@
             </div>
 
             <!-- Profile (Dinamis Sesuai Akun Login) -->
-            <div class="flex items-center ml-3">
-              <div>
-                <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
-                  <span class="sr-only">Buka menu pengguna</span>
-                  <img class="w-8 h-8 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Admin') }}&background=2563EB&color=fff" alt="User Avatar">
-                </button>
-              </div>
-              <!-- Dropdown menu -->
-              <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-2">
-                <div class="px-4 py-3" role="none">
-                  <p class="text-sm font-semibold text-gray-900 dark:text-white" role="none">
-                    {{ Auth::user()->name ?? 'Administrator' }}
-                  </p>
-                  <p class="text-sm font-medium text-gray-500 truncate dark:text-gray-300" role="none">
-                    {{ Auth::user()->email ?? 'admin@stokify.com' }}
-                  </p>
-                </div>
-                <ul class="py-1" role="none">
-                  <li>
-                    <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('reports.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Laporan Mutasi</a>
-                  </li>
-                  <li>
-                    <!-- Form Logout Resmi -->
-                    <form action="{{ route('logout') }}" method="POST" class="block">
-                      @csrf
-                      <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:text-red-400 dark:hover:bg-gray-600" role="menuitem">
-                        Sign out
-                      </button>
-                    </form>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-      </div>
+<div class="flex items-center ml-3">
+  <div>
+    <!-- 1. Tombol Avatar -->
+    <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
+      <span class="sr-only">Buka menu pengguna</span>
+      <img class="w-8 h-8 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Admin') }}&background=2563EB&color=fff" alt="User Avatar">
+    </button>
+  </div>
+
+  <!-- 2. Kotak Menu Dropdown -->
+  <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-2">
+    <div class="px-4 py-3" role="none">
+      <p class="text-sm font-semibold text-gray-900 dark:text-white" role="none">
+        {{ Auth::user()->name ?? 'Administrator' }}
+      </p>
+      <p class="text-sm font-medium text-gray-500 truncate dark:text-gray-300" role="none">
+        {{ Auth::user()->email ?? 'admin@stockify.com' }}
+      </p>
     </div>
+
+    <ul class="py-1" role="none">
+      <li>
+        <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+      </li>
+      <!-- Menu Pengaturan Profil ditambahkan di sini -->
+      <li>
+        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Pengaturan Profil</a>
+      </li>
+      <li>
+        <a href="{{ route('reports.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Laporan Mutasi</a>
+      </li>
+      <li>
+        <!-- Form Logout Resmi -->
+        <form action="{{ route('logout') }}" method="POST" class="block">
+          @csrf
+          <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:text-red-400 dark:hover:bg-gray-600" role="menuitem">
+            Sign out
+          </button>
+        </form>
+      </li>
+    </ul>
+  </div>
+</div>
 </nav>

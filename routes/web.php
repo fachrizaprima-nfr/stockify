@@ -9,6 +9,7 @@ use App\Http\Controllers\StockInController;
 use App\Http\Controllers\StockOutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,4 +63,8 @@ Route::middleware('auth')->group(function () {
 
     // Laporan Mutasi
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+    // Pengaturan Akun / Profil
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
