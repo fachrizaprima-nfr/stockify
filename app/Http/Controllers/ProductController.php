@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Services\ProductService;
 use App\Services\CategoryService;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -44,8 +46,13 @@ class ProductController extends Controller
             'purchase_price' => 'required|numeric|min:0',
             'selling_price'  => 'required|numeric|min:0',
             'minimum_stock'  => 'required|integer|min:0',
+            'image'          => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'description'    => 'nullable|string',
         ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('products', 'public');
+        }
 
         $this->productService->createProduct($validated);
 
@@ -62,8 +69,17 @@ class ProductController extends Controller
             'purchase_price' => 'required|numeric|min:0',
             'selling_price'  => 'required|numeric|min:0',
             'minimum_stock'  => 'required|integer|min:0',
+            'image'          => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'description'    => 'nullable|string',
         ]);
+
+        if ($request->hasFile('image')) {
+            $product = Product::find($id);
+            if ($product && $product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $validated['image'] = $request->file('image')->store('products', 'public');
+        }
 
         $this->productService->updateProduct($id, $validated);
 
@@ -72,6 +88,11 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
+        $product = Product::find($id);
+        if ($product && $product->image && Storage::disk('public')->exists($product->image)) {
+            Storage::disk('public')->delete($product->image);
+        }
+
         $this->productService->deleteProduct($id);
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');

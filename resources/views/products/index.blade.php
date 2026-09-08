@@ -73,7 +73,20 @@
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                             <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">{{ $index + 1 }}</td>
                             <td class="p-4 text-sm font-mono text-blue-600 dark:text-blue-400">{{ $product->sku }}</td>
-                            <td class="p-4 text-sm font-semibold text-gray-900 dark:text-white">{{ $product->name }}</td>
+                            <td class="p-4 text-sm font-semibold text-gray-900 dark:text-white">
+                                <div class="flex items-center gap-3">
+                                    @if ($product->image)
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-10 h-10 rounded-lg object-cover border border-gray-200 dark:border-gray-700 shrink-0">
+                                    @else
+                                        <div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400 shrink-0">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                    @endif
+                                    <span>{{ $product->name }}</span>
+                                </div>
+                            </td>
                             <td class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400">{{ $product->category->name ?? '-' }}</td>
                             <td class="p-4 text-sm font-normal text-gray-500 dark:text-gray-400">{{ $product->supplier->name ?? '-' }}</td>
                             <td class="p-4 text-sm font-medium text-gray-900 dark:text-white">Rp {{ number_format($product->purchase_price, 0, ',', '.') }}</td>
@@ -108,11 +121,11 @@
                                         </h3>
                                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-100 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white" data-modal-toggle="modal-edit-{{ $product->id }}">
                                             <svg class="w-3 h-3" fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                <path stroke-currentColor="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                             </svg>
                                         </button>
                                     </div>
-                                    <form action="{{ route('products.update', $product->id) }}" method="POST">
+                                    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         <div class="p-6 space-y-4">
@@ -161,6 +174,19 @@
                                                 </div>
                                             </div>
 
+                                            <!-- Input Foto Produk (Edit) -->
+                                            <div>
+                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">Foto Produk</label>
+                                                @if ($product->image)
+                                                    <div class="flex items-center gap-3 mb-2 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 rounded-lg object-cover border border-gray-300 dark:border-gray-600">
+                                                        <span class="text-xs text-gray-500 dark:text-gray-400">Pilih file baru jika ingin memperbarui foto saat ini.</span>
+                                                    </div>
+                                                @endif
+                                                <input type="file" name="image" accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Format: JPG, PNG, WEBP (Maks. 2MB)</p>
+                                            </div>
+
                                             <div>
                                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">Deskripsi</label>
                                                 <textarea name="description" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">{{ $product->description }}</textarea>
@@ -204,7 +230,7 @@
                     </svg>
                 </button>
             </div>
-            <form action="{{ route('products.store') }}" method="POST">
+            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="p-6 space-y-4">
                     <div class="grid grid-cols-2 gap-4">
@@ -252,6 +278,13 @@
                             <label for="minimum_stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">Min. Stok <span class="text-red-500">*</span></label>
                             <input type="number" name="minimum_stock" id="minimum_stock" placeholder="Contoh: 5" min="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required>
                         </div>
+                    </div>
+
+                    <!-- Input Foto Produk (Tambah) -->
+                    <div>
+                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">Foto Produk</label>
+                        <input type="file" name="image" id="image" accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Format: JPG, PNG, WEBP (Maks. 2MB)</p>
                     </div>
 
                     <div>
